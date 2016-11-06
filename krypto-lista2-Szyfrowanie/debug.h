@@ -1,6 +1,6 @@
 #pragma once
 
-constexpr bool debug = true;
+constexpr bool debug = false;
 
 
 inline void printHex(const std::string& tab)

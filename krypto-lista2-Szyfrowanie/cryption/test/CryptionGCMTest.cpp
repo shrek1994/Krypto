@@ -28,7 +28,7 @@ protected:
     AES_GCM sut = {key, iv};
 };
 
-TEST_F(CryptionGCMTest, encryptFile)
+TEST_F(CryptionGCMTest, DISABLED_encryptFile)
 {
     std::stringstream in(text);
 

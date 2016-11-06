@@ -54,10 +54,23 @@ std::stringstream CryptionAesGcm::decrypt(std::istream &in)
         GCM< AES >::Decryption decryption;
         decryption.SetKeyWithIV( key, key.size(), iv );
 
-        AuthenticatedDecryptionFilter df( d,
-            new StringSink( rpdata ),
-            AuthenticatedDecryptionFilter::Flags::DEFAULT_FLAGS, TAG_SIZE
-        ); // AuthenticatedDecryptionFilter
+        FileSource fs (in,
+                       true,
+                       new StreamTransformationFilter(decryption,
+                                                      new StringSink(recoveredFile)));
+//        FileSource fs(in,
+//                      true,
+//                      new AuthenticatedDecryptionFilter(
+//                          decryption,
+//                          new StringSink(recoveredFile),
+//                          AuthenticatedDecryptionFilter::Flags::DEFAULT_FLAGS,
+//                          TAG_SIZE));
+
+//        AuthenticatedDecryptionFilter df( decryption,
+//                                          new S
+//            new StringSink( rpdata ),
+//            AuthenticatedDecryptionFilter::Flags::DEFAULT_FLAGS, TAG_SIZE
+//        ); // AuthenticatedDecryptionFilter
 
         LOG << "recovered text: " << recoveredFile << std::endl;
         out << recoveredFile;

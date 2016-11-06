@@ -3,7 +3,7 @@
 #include "ICryption.hpp"
 #include <cryptopp/secblock.h>
 
-class CryptionAesCtr : ICryption
+class CryptionAesCtr : public ICryption
 {
 public:
     CryptionAesCtr(CryptoPP::SecByteBlock& key, CryptoPP::SecByteBlock& iv)
