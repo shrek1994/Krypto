@@ -30,9 +30,10 @@ class KeySaveAndReadTest : public ::testing::Test {
 public:
     std::stringstream file;
     std::stringstream standardIn;
+    std::stringstream standardOut;
     std::shared_ptr<RandomMock> randomMock = std::make_shared<RandomMock>();
-    std::unique_ptr<KeyInstaler> installer = std::make_unique<KeyInstaler>(file, standardIn, randomMock);
-    std::unique_ptr<KeyReader> reader = std::make_unique<KeyReader>(file, standardIn);
+    std::unique_ptr<KeyInstaler> installer = std::make_unique<KeyInstaler>(file, standardIn, randomMock, standardOut);
+    std::unique_ptr<KeyReader> reader = std::make_unique<KeyReader>(file, standardIn, standardOut);
 };
 
 TEST_F(KeySaveAndReadTest, saveAndRead) {

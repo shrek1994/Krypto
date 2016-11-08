@@ -10,7 +10,7 @@ Key KeyReader::readKey()
     constexpr long unsigned MAX_KEY_LENGTH = CryptoPP::AES::DEFAULT_KEYLENGTH;
     std::string pass;
     char password[MAX_KEY_LENGTH] = {0};
-    std::cout << "Podaj haslo do szyfowania :" << std::flush;
+    outStream << "Podaj haslo do szyfowania :" << std::flush;
     CryptionMain::hideStdinKeystrokes();
     inStream >> pass;
     CryptionMain::showStdinKeystrokes();

@@ -18,14 +18,16 @@ class KeyInstaler
 public:
     KeyInstaler(std::ostream& outFile,
                 std::istream& inStream = std::cin,
-                std::shared_ptr<CryptoPP::RandomNumberGenerator> random = std::make_shared<CryptoPP::AutoSeededRandomPool>())
-        : out(outFile), in(inStream), random(random){}
+                std::shared_ptr<CryptoPP::RandomNumberGenerator> random = std::make_shared<CryptoPP::AutoSeededRandomPool>(),
+                std::ostream& outStream = std::cout)
+        : outFile(outFile), inStream(inStream), random(random), outStream(outStream) {}
 
     void install();
 private:
-    std::ostream& out;
-    std::istream& in;
+    std::ostream& outFile;
+    std::istream& inStream;
     std::shared_ptr<CryptoPP::RandomNumberGenerator> random;
+    std::ostream& outStream;
 };
 
 #endif // KEYINSTALER_H

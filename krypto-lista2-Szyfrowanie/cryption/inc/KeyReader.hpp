@@ -13,14 +13,15 @@ struct Key
 class KeyReader
 {
 public:
-    KeyReader(std::istream& inFile, std::istream& inStream = std::cin)
-        : in(inFile), inStream(inStream) {}
+    KeyReader(std::istream& inFile, std::istream& inStream = std::cin, std::ostream& outStream = std::cout)
+        : in(inFile), inStream(inStream), outStream(outStream) {}
 
     Key readKey();
 
 private:
     std::istream& in;
     std::istream& inStream;
+    std::ostream& outStream;
 };
 
 #endif // KEYREADER_H

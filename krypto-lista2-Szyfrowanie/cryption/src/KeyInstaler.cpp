@@ -12,9 +12,9 @@ void KeyInstaler::install()
     constexpr long unsigned MAX_KEY_LENGTH = CryptoPP::AES::DEFAULT_KEYLENGTH;
     std::string pass;
     char password[MAX_KEY_LENGTH] = {0};
-    std::cout << "Podaj haslo do szyfowania :" << std::flush;
+    outStream << "Podaj haslo do szyfowania :" << std::flush;
     CryptionMain::hideStdinKeystrokes();
-    in >> pass;
+    inStream >> pass;
     CryptionMain::showStdinKeystrokes();
 
     std::memcpy(password, pass.c_str(), std::min(MAX_KEY_LENGTH, pass.length()));
@@ -43,5 +43,5 @@ void KeyInstaler::install()
 
     auto keyencrypted = cbc.encrypt(keyStream);
 
-    out << keyencrypted.str();
+    outFile << keyencrypted.str();
 }
