@@ -4,6 +4,8 @@
 #include <iostream>
 #include <fstream>
 #include <cryptopp/aes.h>
+#include <cryptopp/osrng.h>
+
 
 
 namespace CONST {
@@ -14,13 +16,16 @@ constexpr byte initialVectorByte[CryptoPP::AES::DEFAULT_KEYLENGTH] =
 class KeyInstaler
 {
 public:
-    KeyInstaler(std::ostream& outFile, std::istream& inStream = std::cin)
-        : out(outFile) {}
+    KeyInstaler(std::ostream& outFile,
+                std::istream& inStream = std::cin,
+                std::shared_ptr<CryptoPP::RandomNumberGenerator> random = std::make_shared<CryptoPP::AutoSeededRandomPool>())
+        : out(outFile), in(inStream), random(random){}
 
     void install();
-
 private:
     std::ostream& out;
+    std::istream& in;
+    std::shared_ptr<CryptoPP::RandomNumberGenerator> random;
 };
 
 #endif // KEYINSTALER_H

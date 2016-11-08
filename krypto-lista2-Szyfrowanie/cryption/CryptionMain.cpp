@@ -18,17 +18,28 @@ CryptoPP::SecByteBlock key = {keyByte, sizeof(keyByte)};
 CryptoPP::SecByteBlock iv =  {ivByte, sizeof(ivByte)};
 } //namespace
 
-int CryptionMain::install()
+void CryptionMain::install()
 {
-//    KeyInstaler key;
+    std::string filename;
+
+    std::cout << "Podaj nazwe keystore'a: " << std::flush;
+    std::cin >> filename;
+
+    std::fstream file;
+    file.open(filename);
+
+    KeyInstaler installer(file);
+    installer.install();
+
+    file.close();
 }
 
-int CryptionMain::run(int numOfArg, char *args[])
+void CryptionMain::run(int numOfArg, char *args[])
 {
-    if ( numOfArg < 3)
+    if ( numOfArg < 5)
     {
         showHelp(args[0]);
-        return 0;
+        return;
     }
 
     std::string modeOfCryption = args[1];

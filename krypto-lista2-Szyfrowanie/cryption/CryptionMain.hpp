@@ -9,8 +9,8 @@ public:
         : in(in),
           out(out) {}
 
-    int install();
-    int run(int numOfArg, char* args[]);
+    void install();
+    void run(int numOfArg, char* args[]);
 
     static void hideStdinKeystrokes();
     static void showStdinKeystrokes();

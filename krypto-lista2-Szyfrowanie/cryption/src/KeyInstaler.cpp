@@ -5,31 +5,41 @@
 #include <cryptopp/osrng.h>
 #include "CryptionMain.hpp"
 
+#include "debug.h"
 
 void KeyInstaler::install()
 {
-    char password[CryptoPP::AES::DEFAULT_KEYLENGTH] = {0};
+    constexpr long unsigned MAX_KEY_LENGTH = CryptoPP::AES::DEFAULT_KEYLENGTH;
+    std::string pass;
+    char password[MAX_KEY_LENGTH] = {0};
     std::cout << "Podaj haslo do szyfowania :" << std::flush;
     CryptionMain::hideStdinKeystrokes();
-    std::cin >> password;
+    in >> pass;
     CryptionMain::showStdinKeystrokes();
 
-    CryptoPP::SecByteBlock passwordKey((byte*)password, CryptoPP::AES::DEFAULT_KEYLENGTH);
-    CryptoPP::SecByteBlock initialVector(CONST::initialVectorByte, CryptoPP::AES::DEFAULT_KEYLENGTH);
+    std::memcpy(password, pass.c_str(), std::min(MAX_KEY_LENGTH, pass.length()));
+
+    CryptoPP::SecByteBlock passwordKey((byte*)password, MAX_KEY_LENGTH);
+    CryptoPP::SecByteBlock initialVector(CONST::initialVectorByte, MAX_KEY_LENGTH);
 
     AES_CBC cbc(passwordKey, initialVector);
 
     // generowanie klucza i iv
-    CryptoPP::AutoSeededRandomPool random;
+//    CryptoPP::AutoSeededRandomPool random;
 
-    byte key[CryptoPP::AES::DEFAULT_KEYLENGTH];
-    random.GenerateBlock(key, sizeof(key));
+    byte key[MAX_KEY_LENGTH];
+    random->GenerateBlock(key, sizeof(key));
 
-    byte iv[ CryptoPP::AES::BLOCKSIZE ];
-    random.GenerateBlock(iv, sizeof(iv));
+    byte iv[MAX_KEY_LENGTH];
+    random->GenerateBlock(iv, sizeof(iv));
 
     std::stringstream keyStream;
-    keyStream << key << "\n" << iv;
+    for (int i = 0; i < CryptoPP::AES::DEFAULT_KEYLENGTH; i++)
+    {
+        keyStream << key[i] << iv[i];
+    }
+
+//    LOG << keyStream.str() << "\n";
 
     auto keyencrypted = cbc.encrypt(keyStream);
 

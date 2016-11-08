@@ -10,18 +10,17 @@ struct Key
     byte iv[CryptoPP::AES::DEFAULT_KEYLENGTH] = {0};
 };
 
-
 class KeyReader
 {
 public:
-    KeyReader(std::istream& inFile)
-        : in(inFile) {}
+    KeyReader(std::istream& inFile, std::istream& inStream = std::cin)
+        : in(inFile), inStream(inStream) {}
 
     Key readKey();
 
-
 private:
     std::istream& in;
+    std::istream& inStream;
 };
 
 #endif // KEYREADER_H

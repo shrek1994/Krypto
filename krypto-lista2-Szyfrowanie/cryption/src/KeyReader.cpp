@@ -3,25 +3,36 @@
 #include "CryptionMain.hpp"
 #include "CryptionAesCbc.hpp"
 
+#include "debug.h"
 
 Key KeyReader::readKey()
 {
-    char password[CryptoPP::AES::DEFAULT_KEYLENGTH] = {0};
+    constexpr long unsigned MAX_KEY_LENGTH = CryptoPP::AES::DEFAULT_KEYLENGTH;
+    std::string pass;
+    char password[MAX_KEY_LENGTH] = {0};
     std::cout << "Podaj haslo do szyfowania :" << std::flush;
     CryptionMain::hideStdinKeystrokes();
-    std::cin >> password;
+    inStream >> pass;
     CryptionMain::showStdinKeystrokes();
 
+    std::memcpy(password, pass.c_str(), std::min(MAX_KEY_LENGTH, pass.length()));
 
-    CryptoPP::SecByteBlock passwordKey((byte*)password, CryptoPP::AES::DEFAULT_KEYLENGTH);
-    CryptoPP::SecByteBlock initialVector(CONST::initialVectorByte, CryptoPP::AES::DEFAULT_KEYLENGTH);
+    CryptoPP::SecByteBlock passwordKey((byte*)password, MAX_KEY_LENGTH);
+    CryptoPP::SecByteBlock initialVector(CONST::initialVectorByte, MAX_KEY_LENGTH);
 
     AES_CBC cbc(passwordKey, initialVector);
 
     Key key;
 
     auto decryptedKey = cbc.decrypt(in);
-    decryptedKey >> key.key >> key.iv;
+
+    LOG << decryptedKey.str() << "\n";
+
+    for (int i = 0; i < CryptoPP::AES::DEFAULT_KEYLENGTH; i++)
+    {
+        key.key[i] = decryptedKey.get();
+        key.iv[i] = decryptedKey.get();
+    }
 
     return std::move(key);
 }
