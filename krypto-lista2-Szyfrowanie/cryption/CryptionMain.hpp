@@ -6,8 +6,8 @@ class CryptionMain
 {
 public:
     CryptionMain(std::istream& in = std::cin, std::ostream& out = std::cout)
-        : in(in),
-          out(out) {}
+        : inStream(in),
+          outStream(out) {}
 
     void install();
     void run(int numOfArg, char* args[]);
@@ -16,10 +16,10 @@ public:
     static void showStdinKeystrokes();
 
 private:
-    void showHelp(char* filename);
+    void showHelp(std::string filename);
 
-    std::istream& in;
-    std::ostream& out;
+    std::istream& inStream;
+    std::ostream& outStream;
 };
 
 #endif // CRYPTIONMAIN_H

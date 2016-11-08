@@ -9,23 +9,32 @@
 
 #include "CryptionFactory.hpp"
 #include "KeyInstaler.hpp"
+#include "KeyReader.hpp"
 
-namespace {
-const byte keyByte[CryptoPP::AES::DEFAULT_KEYLENGTH] = { 0x12, 0x23, 0x34, 0x45, 0x56, 0x67, 0x78, 0x89, 0x90 };
-const byte ivByte[CryptoPP::AES::DEFAULT_KEYLENGTH] = { 0x98, 0x76, 0x54, 0x32, 0x10 };
+//namespace {
+//const byte keyByte[CryptoPP::AES::DEFAULT_KEYLENGTH] = { 0x12, 0x23, 0x34, 0x45, 0x56, 0x67, 0x78, 0x89, 0x90 };
+//const byte ivByte[CryptoPP::AES::DEFAULT_KEYLENGTH] = { 0x98, 0x76, 0x54, 0x32, 0x10 };
 
-CryptoPP::SecByteBlock key = {keyByte, sizeof(keyByte)};
-CryptoPP::SecByteBlock iv =  {ivByte, sizeof(ivByte)};
-} //namespace
+//CryptoPP::SecByteBlock key = {keyByte, sizeof(keyByte)};
+//CryptoPP::SecByteBlock iv =  {ivByte, sizeof(ivByte)};
+//} //namespace
 
 void CryptionMain::install()
 {
+    char decision;
+    outStream << "zainstalowac klucz? (y/n): " << std::flush;
+    inStream >> decision;
+    if ( decision != 'y' && decision != 'Y')
+    {
+        return;
+    }
+
     std::string filename;
 
-    std::cout << "Podaj nazwe keystore'a: " << std::flush;
-    std::cin >> filename;
+    outStream << "Podaj nazwe keystore'a: " << std::flush;
+    inStream >> filename;
 
-    std::fstream file;
+    std::ofstream file;
     file.open(filename);
 
     KeyInstaler installer(file);
@@ -39,6 +48,7 @@ void CryptionMain::run(int numOfArg, char *args[])
     if ( numOfArg < 5)
     {
         showHelp(args[0]);
+        install();
         return;
     }
 
@@ -48,18 +58,23 @@ void CryptionMain::run(int numOfArg, char *args[])
     std::string fileName = args[4];
 
     CryptionFactory factory(modeOfCryption);
+
+    std::ifstream keyStore(pathToKeyStore);
+    Key keyStruct = KeyReader(keyStore).readKey();
+    CryptoPP::SecByteBlock key = {keyStruct.key, sizeof(keyStruct.key)};
+    CryptoPP::SecByteBlock iv =  {keyStruct.iv, sizeof(keyStruct.iv)};
     auto cryption = factory.create(key, iv);
 
-    std::cout<< "Encrypt(e) czy Decrypt(d) : "<< std::flush;
+    outStream << "Encrypt(e) czy Decrypt(d) : "<< std::flush;
     char mode;
-    std::cin >> mode;
+    inStream >> mode;
+    outStream << "\n";
 
     std::ifstream inFile(fileName);
     if (mode =='d')
     {
         auto out = cryption->decrypt(inFile);
-        std::ofstream outFile(fileName + ".aes");
-//        std::cout << out.str();
+        std::ofstream outFile(fileName + ".out");
         outFile << out.str();
         outFile.close();
     }
@@ -67,8 +82,7 @@ void CryptionMain::run(int numOfArg, char *args[])
     {
         std::ifstream inFile(fileName);
         auto out = cryption->encrypt(inFile);
-        std::ofstream outFile(fileName + ".txt");
-//        std::cout << out.str();
+        std::ofstream outFile(fileName + ".aes");
         outFile << out.str();
         outFile.close();
     }
@@ -100,9 +114,11 @@ void CryptionMain::showStdinKeystrokes()
     tcsetattr(STDIN_FILENO, TCSANOW, &tty);
 }
 
-void CryptionMain::showHelp(char* filename)
+void CryptionMain::showHelp(std::string filename)
 {
-    out << filename << "TRYBSZYFROWANIA SCIEZKADOKEYSTORE'A IDKLUCZA PLIKDOZASZYFROWANIA\n"
-        << "np: " << filename << "AES CBC keystore.aes ID plik.txt\n";
+    filename = filename.substr(filename.find_last_of('/') + 1);
+    outStream << "Blad - za malo argumentow - uruchamianie:\n"
+              << filename << " TRYBSZYFROWANIA SCIEZKADOKEYSTORE'A IDKLUCZA PLIKDOZASZYFROWANIA\n"
+              << "np: " << filename << " CBC keystore.aes ID plik.txt\n";
 }
 
