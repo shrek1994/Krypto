@@ -1,0 +1,27 @@
+HTTP/1.1 200 Partial Content
+Date: Wed, 01 Feb 2017 18:45:26 GMT
+Server: Apache/2.4.18 (Ubuntu)
+Vary: Accept-Encoding
+Content-Encoding: gzip
+Content-Range: bytes 0-652/653
+Content-Length: 653
+Keep-Alive: timeout=5, max=20
+Connection: Keep-Alive
+Content-Type: text/html; charset=UTF-8
+
+<script>console.log( 'Debug Objects: SHOW' );</script>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<link rel="stylesheet" href="styles.css">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Logowanie</title>
+</head>
+
+
+<body>
+    <div id="content" style="max-width:800px; height:800px;">
+        <div id="container">
+            <img src="sync.png" alt="Mountain View">
+            <div>GWARANCJA BEZPIECZEŃSTWA</div><br><br>
+            <form method="post" action="login.php" class=login

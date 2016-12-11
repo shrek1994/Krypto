@@ -1,0 +1,71 @@
+HTTP/1.1 200 Partial Content
+Date: Wed, 01 Feb 2017 18:45:26 GMT
+Server: Apache/2.4.18 (Ubuntu)
+Last-Modified: Thu, 22 Dec 2016 21:02:17 GMT
+ETag: "2f2-54445959bc840-gzip"
+Accept-Ranges: bytes
+Vary: Accept-Encoding
+Content-Encoding: gzip
+Content-Range: bytes 0-373/374
+Content-Length: 374
+Keep-Alive: timeout=5, max=64
+Connection: Keep-Alive
+Content-Type: text/css
+
+body{
+  color: #ffffff;
+  font-family:serif;;
+
+}
+
+
+
+#content{
+  padding: 10px;
+  background-color: #aaaaaa;
+}
+
+.login{
+font-size:200%;
+}
+
+form  input{
+  font-size:100%;
+  width: 300px;
+  height: 30px;
+}
+
+button {
+  border-radius: 10px;
+  width: 300px;
+  height: 60px;
+  background-color: #E20074; /* Green */
+  border: none;
+  color: white;
+
+
+  text-align: center;
+  display: inline-block;
+  font-size: 30px;
+
+  -webkit-transition-duration: 0.3s; /* Safari */
+    transition-duration: 0.3s;
+
+}
+
+button:hover {
+    border: 4px solid #E20074;
+    background-color: #FFFFFF; /* Green */
+    color: #E20074;
+}
+
+footer {
+    clear: both;
+    position: relative;
+    z-index: 10;
+    height: 3em;
+    margin-top: -3em;
+    padding: 10px;
+    font-size:100%;
+}
+!

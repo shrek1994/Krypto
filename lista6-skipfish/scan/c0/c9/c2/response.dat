@@ -1,0 +1,12 @@
+HTTP/1.1 200 Partial Content
+Date: Wed, 01 Feb 2017 18:45:26 GMT
+Server: Apache/2.4.18 (Ubuntu)
+Vary: Accept-Encoding
+Content-Encoding: gzip
+Content-Range: bytes 0-151/152
+Content-Length: 152
+Keep-Alive: timeout=5, max=100
+Connection: Keep-Alive
+Content-Type: text/html; charset=UTF-8
+
+<script>console.log( 'Debug Objects: SHOW' );</script><script>console.log( 'Debug Objects: mysql_query' );</script><script>console.log( 'Debug Objects: skipfish' );</script><script>console.log( 'Debug Objects: mysql_fetch_array' );</script>Invalid login information. Please to the previous page.
